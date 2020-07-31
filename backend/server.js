@@ -4,6 +4,7 @@ const mongoose = require('mongoose'); //Mongoose will help us connect to mongoDB
 
 require('dotenv').config();
 
+// Use express framework
 const app = express();
 
 // Get port from process.env file or use port 5000
@@ -23,6 +24,14 @@ connection.once('open', () => {
     console.log('MongoDB database connection established successfully!'); // Callback function
 });
 
+
+// Router files
+const exercisesRouter = require('./routes/exercises');
+const usersRouter = require('./routes/users');
+
+// when users hit /exercises, app will load everythin in exerciseRouter and same for users
+app.use('/exercises', exercisesRouter);
+app.use('/users', usersRouter);
 
 
 
