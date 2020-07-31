@@ -1,11 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter as Router, Route} from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+// Importing react component files
+import Navbar from "./components/navbar.component";
+import ExercisesList from "./components/exercises-list.component";
+import EditExercise from "./components/edit-exercise.component";
+import CreateExercise from "./components/create-exercise.component";
+import CreateUser from "./components/create-user.component";
+
+// OOB imports - Not needed, hence commenting
+// import logo from './logo.svg';
+// import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    // <div className="App">
+    <Router>
+      {/* creating separate react components */}
+      <div className='container'>
+        <Navbar />
+        <br/>
+        <Route path="/" exact component = {ExercisesList} />
+        <Route path="/edit/:id" exact component = {EditExercise} />
+        <Route path="/create" exact component = {CreateExercise} />
+        <Route path="/user" exact component = {CreateUser} />
+      </div>
+    </Router>
+
+
+
+
+
+
+
+
+
+      /* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -18,8 +49,8 @@ function App() {
         >
           Learn React
         </a>
-      </header>
-    </div>
+      </header> 
+    </div>*/
   );
 }
 
