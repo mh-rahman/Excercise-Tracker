@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import axios from 'axios';
 //import datepicker and it's styling
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
@@ -24,8 +24,8 @@ export default class CreateExercise extends Component{
         //When state is updated the page is also updated with new values.
         this.state = {
             username : "",
-            description : '',
-            duration : 0,
+            description : 'Enter a description of the exercise.',
+            duration : 10,
             date : new Date(),
             users : []
         }
@@ -35,10 +35,15 @@ export default class CreateExercise extends Component{
     // Get users from mongoDB but we will hardcode for now
     // componentDidMount - is a react lifecycle method that it calls before anything is displayed on page.
     componentDidMount() {
-        this.setState({
-            users: ['test user 1', 'test user 2'],
-            username: 'test user' // default selection in the form
-        });
+        axios.get('http://localhost:5000/users')
+            .then(response => {
+                if (response.data.length > 0) {
+                    this.setState({
+                        users: response.data.map(user => user.username),
+                        username: response.data[0].username
+                    })
+                }
+            });
     }
 
     // this func will be called when, let's say, someone enters a value in the text box on the site.
@@ -92,13 +97,17 @@ export default class CreateExercise extends Component{
             date : this.state.date,
         };
 
-        // Submit and commit to DB
-        // Placeholder for submit code
-
         console.log(exercise);
 
+        //Front-End and Back-end integration
+        // Submit and commit to DB
+        axios.post('http://localhost:5000/exercises/add', exercise)
+            .then(res => console.log(res.data))
+            .catch((err) => console.log(err))
+            //handle errors        
+
         // Take user back to homepage i.e. list of exercises
-        window.location = "/";
+        // window.location = "/create";
     }
 
 
@@ -114,6 +123,7 @@ export default class CreateExercise extends Component{
                             required
                             className="form-control"
                             value={this.state.username}
+                            // placeholder='Select a user to add.'
                             onChange={this.onChangeUsername}>
                             {
                                 this.state.users.map(function(user) {
@@ -130,8 +140,10 @@ export default class CreateExercise extends Component{
                         <input type="text"
                             required
                             className="form-control"
+                            // placeholder='Enter a description of the exercise.'
                             value={this.state.description}
-                            onChange={this.state.onChangeDescription}
+                            // defaultValue={this.state.description}
+                            onChange={this.onChangeDescription}
                             />
                     </div>
                     <div className="form-group">
@@ -139,8 +151,10 @@ export default class CreateExercise extends Component{
                         <input type="text"
                             required
                             className="form-control"
+                            // placeholder='0'
                             value={this.state.duration}
-                            onChange={this.state.onChangeDuration}
+                            // defaultValue={this.state.duration}
+                            onChange={this.onChangeDuration}
                             />
                     </div>
                     <div className="form-group">
