@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose'); //Mongoose will help us connect to mongoDB Atlas DB
+const path = require('path');
 
 require('dotenv').config();
 
@@ -33,6 +34,16 @@ const usersRouter = require('./routes/users');
 app.use('/exercises', exercisesRouter);
 app.use('/users', usersRouter);
 
+
+// Serve static assets if in production
+if (process.env.NODE_ENV === 'production') {
+    // Set static folder
+    app.use(express.static('build'));
+
+    app.get('*', (req,res) =>{
+        res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+    });
+}
 
 
 // This starts the server on port
