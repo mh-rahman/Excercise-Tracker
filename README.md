@@ -4,6 +4,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### npm launch-app
+
+Launch both front-end and back-end server suing concurrently
+
 ### `npm start`
 
 Runs the app in the development mode.<br />
